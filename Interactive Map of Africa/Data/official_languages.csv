@@ -1,0 +1,56 @@
+country,fips,pop,pop_est_year,english_only,french_only,portuguese_only,none,english_french,spanish_french_portuguese,spanish_only,official_language,pct_internet_users,internet_source
+Algeria,AG,40400000,2016,0,0,0,1,0,0,0,Other,42.94552688,ITU
+Angola,AO,25789024,2014,0,0,1,0,0,0,0,Portuguese,13,ITU
+Benin,BN,10872298,2016,0,1,0,0,0,0,0,French,11.99404791,ITU
+Botswana,BC,2250260,2016,1,0,0,0,0,0,0,English,39.36299738,ITU
+Burkina Faso,UV,20107509,2017,0,1,0,0,0,0,0,French,13.96,ITU
+Burundi,BY,10524117,2016,0,0,0,0,1,0,0,English and French,5.173626777,ITU
+Cameroon,CM,23439189,2016,0,0,0,0,1,0,0,English and French,25,ITU
+Cape Verde,CV,539560,2016,0,0,1,0,0,0,0,Portuguese,50.32281787,ITU
+Central African Republic,CT,4594621,2016,0,1,0,0,0,0,0,French,4,ITU
+Chad,CD,13670084,2015,0,1,0,0,0,0,0,French,5,ITU
+Comoros,CN,795601,2016,0,1,0,0,0,0,0,French,7.938322771,ITU
+Cote d'Ivoire,IV,23740424,2018,0,1,0,0,0,0,0,French,26.53,ITU
+Democratic Republic of the Congo,CG,78736153,2016,0,1,0,0,0,0,0,French,6.21,ITU
+Djibouti,DJ,942333,2016,0,1,0,0,0,0,0,French,13.13491511,ITU
+Egypt,EG,97108400,2017,0,0,0,1,0,0,0,Other,41.24806709,ITU
+Equatorial Guinea,EK,1221490,2016,0,0,0,0,0,1,0,"Spanish, French and Portuguese",23.77999997,ITU
+Eritrea,ER,4954645,2016,0,0,0,1,0,0,0,Other,1.17711872,ITU
+Eswatini,WZ,1343098,2016,1,0,0,0,0,0,0,English,28.57,ITU
+Ethiopia,ET,102403196,2016,0,0,0,1,0,0,0,Other,15.36692386,ITU
+Gabon,GB,1979786,2016,0,1,0,0,0,0,0,French,48.05227375,ITU
+Gambia,GA,2051363,2017,1,0,0,0,0,0,0,English,18.5,ITU
+Ghana,GH,28308301,2016,1,0,0,0,0,0,0,English,34.66600065,ITU
+Guinea,GV,12395924,2016,0,1,0,0,0,0,0,French,9.8,ITU
+Guinea-Bissau,PU,1815698,2016,0,0,1,0,0,0,0,Portuguese,3.761413832,ITU
+Kenya,KE,49125325,2017,1,0,0,0,0,0,0,English,26,ITU
+Lesotho,LT,2203821,2016,1,0,0,0,0,0,0,English,27.36,ITU
+Libera,LI,4503000,2015,1,0,0,0,0,0,0,English,7.32,ITU
+Libya,LY,6293253,2016,0,0,0,1,0,0,0,Other,20.27215956,ITU
+Madagascar,MA,24894551,2016,0,1,0,0,0,0,0,French,4.713662899,ITU
+Malawi,MI,18091575,2016,1,0,0,0,0,0,0,English,9.614097296,ITU
+Mali,ML,17467905,2015,0,1,0,0,0,0,0,French,11.11218649,ITU
+Mauritania,MR,4301018,2016,0,0,0,1,0,0,0,Other,18,ITU
+Mauritius,MP,1262132,2016,0,0,0,0,1,0,0,English and French,52.19132594,ITU
+Morocco,MO,35740000,2017,0,0,0,1,0,0,0,Other,58.27123642,ITU
+Mozambique,MZ,28829476,2016,0,0,1,0,0,0,0,Portuguese,17.52123909,ITU
+Namibia,WA,2606971,2017,1,0,0,0,0,0,0,English,31.03334594,ITU
+Niger,NG,20672987,2016,0,1,0,0,0,0,0,French,4.32275803,ITU
+Nigeria,NI,185989640,2016,1,0,0,0,0,0,0,English,25.67,ITU
+Republic of the Congo,CF,5125821,2016,0,1,0,0,0,0,0,French,8.12,ITU
+Rwanda,RW,11262564,2015,0,0,0,0,1,0,0,English and French,20,ITU
+Sao Tome and Principe,TP,199910,2016,0,0,1,0,0,0,0,Portuguese,28,ITU
+Senegal,SG,15411614,2016,0,1,0,0,0,0,0,French,25.66476804,ITU
+Seychelles,SE,94677,2016,0,0,0,0,1,0,0,English and French,56.51470815,ITU
+Sierra Leone,SL,7075641,2015,1,0,0,0,0,0,0,English,11.77318438,ITU
+Somalia,SO,14317996,2016,0,0,0,1,0,0,0,Other,1.88,ITU
+South Africa,SF,55653654,2016,1,0,0,0,0,0,0,English,54,ITU
+South Sudan,OD,12230730,2016,1,0,0,0,0,0,0,English,17.3,IWS
+Sudan,SU,39578828,2016,1,0,0,0,0,0,0,English,28,ITU
+Tanzania,TZ,55572201,2016,0,0,0,1,0,0,0,Other,13,ITU
+Togo,TO,7965055,2017,0,1,0,0,0,0,0,French,11.31,ITU
+Tunisia,TS,11304482,2016,0,0,0,1,0,0,0,Other,49.6,ITU
+Uganda,UG,41487965,2016,1,0,0,0,0,0,0,English,21.87617046,ITU
+Western Sahara,WI,538755,2016,0,0,0,0,0,0,1,Spanish,4.5,IWS
+Zambia,ZA,16591390,2016,1,0,0,0,0,0,0,English,25.50657885,ITU
+Zimbabwe,ZI,16150362,2016,1,0,0,0,0,0,0,English,23.11998904,ITU

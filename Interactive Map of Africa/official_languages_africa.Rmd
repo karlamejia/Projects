@@ -1,0 +1,241 @@
+---
+title: "Official Languages in Africa"
+subtitle: "Data: Wikipedia, ITU, IWS"
+author: "Karla Mejia"
+output: html_document
+htmlwidgets: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, include=FALSE)
+
+# Set up plotly account info
+Sys.setenv("plotly_username"="karlamejia")
+Sys.setenv("plotly_api_key"="gSFksIdKt0qDWKaMYnd2")
+
+# Set working directory
+#setwd("C:/Users/karla/Documents/Harvard/Thesis/Digital Data/Background/Map")
+
+# Remove all variables from the environment
+remove(list = ls(all.names = TRUE))
+
+# Detach all packages
+detachAllPackages <- function() {
+  basic.packages.blank <-  c("stats", 
+                             "graphics", 
+                             "grDevices", 
+                             "utils", 
+                             "datasets", 
+                             "methods", join
+                             "base")
+  basic.packages <- paste("package:", basic.packages.blank, sep = "")
+
+  package.list <- search()[ifelse(unlist(gregexpr("package:", search())) == 1, 
+                                  TRUE, 
+                                  FALSE)]
+
+  package.list <- setdiff(package.list, basic.packages)
+
+  if (length(package.list) > 0)  for (package in package.list) {
+    detach(package, character.only = TRUE)
+    print(paste("package ", package, " detached", sep = ""))
+  }
+}
+
+detachAllPackages()
+
+# Load packages
+if (!require(rgeos)) {
+  install.packages("rgeos", repos = "http://cran.us.r-project.org")
+  require(rgeos)
+}
+if (!require(rgdal)) {
+  install.packages("rgdal", repos = "http://cran.us.r-project.org")
+  require(rgdal)
+}
+if (!require(raster)) {
+  install.packages("raster", repos = "http://cran.us.r-project.org")
+  require(raster)
+}
+if(!require(ggplot2)) {
+  install.packages("ggplot2", repos="http://cloud.r-project.org")
+  require(ggplot2)
+}
+if(!require(viridis)) {
+  install.packages("viridis", repos="http://cloud.r-project.org")
+  require(viridis)
+}
+# Needed to use left_join method
+if(!require(dplyr)) {
+  install.packages("dplyr", repos = "https://cloud.r-project.org/")
+  require(dplyr)
+}
+if(!require(gtable)) {
+  install.packages("gtable", repos = "https://cloud.r-project.org/")
+  require(gtable)
+}
+if(!require(grid)) {
+  install.packages("grid", repos = "https://cloud.r-project.org/")
+  require(grid)
+}
+if(!require(readxl)) {
+  install.packages("readxl", repos = "https://cloud.r-project.org/")
+  require(readxl)
+}
+# Needed to use pipe operator "%>%" which allegedly reduces operation time
+if(!require(magrittr)) { 
+  install.packages("magrittr", repos = "https://cloud.r-project.org/")
+  require(magrittr)
+}
+if(!require(extrafont)) { 
+  install.packages("extrafont", repos = "https://cloud.r-project.org/")
+  require(extrafont)
+}
+if(!require(colorspace)) { 
+  install.packages("colorspace", repos = "https://cloud.r-project.org/")
+  require(colorspace)
+}
+if(!require(plotly)) { 
+  install.packages("plotly", repos = "https://cloud.r-project.org/")
+  require(plotly)
+}
+```
+
+```{r theme}
+#font_import()
+# Define generic theme based on theme_minimal
+theme_map <- function(...) { # ellipsis allows for an arbitrary number and variety of arguments as well as passing of arguments on to other functions
+  theme_minimal() +
+  theme(
+    #text = element_text(family = "Microsoft Tai Le", color = "#4d4d4d", size=8), 
+    axis.line = element_blank(),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    # panel.grid.minor = element_line(color = "#ebebe5", size = 0.2),
+    panel.grid.major = element_blank(),#element_line(color = "#ebebe5", size = 0.2),
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA), 
+    panel.background = element_rect(fill = "white", color = NA), 
+    legend.position = c(0.2, 0.25),
+    legend.background = element_rect(fill = "white", color = NA),
+    panel.border = element_blank(),
+    ...
+  )
+}
+```
+
+
+```{r data}
+# Download world geodata files
+#download.file("http://thematicmapping.org/downloads/TM_WORLD_BORDERS_SIMPL-0.3.zip", destfile="data/world_shape_file.zip")
+
+# Unzip world geodata files
+#zipF <- "world_shape_file.zip" 
+outDir <- "data" 
+#unzip(zipF,exdir=outDir) 
+
+# Isolate Africa geodata
+world_spdf <- readOGR(dsn=outDir,layer="TM_WORLD_BORDERS_SIMPL-0.3") 
+africa_spdf <- world_spdf[world_spdf@data$REGION==2,]
+
+# Transform Africa geodata into a ggplot2-compatible data frame
+map_data_fortified <- fortify(africa_spdf,region="FIPS") 
+
+# Load official languages data
+official_languages<-read.csv('data/official_languages.csv')
+
+# Merge map data with official languages data by fips code
+map_data <- map_data_fortified %>%
+  left_join(. , official_languages, by=c("id"="fips"))
+
+# Add hover text
+map_data$hover <- with(map_data, 
+                       paste("<b>", country, "</b>", 
+                             "<br>", "Estimated Pop. (", pop_est_year, "): ", format(round(pop/1e6, digits=1)), " million",
+                             "<br>", "Official Language: ", official_language, 
+                             "<br>", "Internet Penetration (", internet_source, "): ", format(round(pct_internet_users), digits=2), "%",
+                             sep=""))
+
+# Remove territories
+map_data <- subset(map_data, !is.na(official_language))
+
+# Reorder official language levels for legend
+map_data$official_language <- factor(map_data$official_language, levels=c("French", "Portuguese", "Spanish", "English", "English and French", "Spanish, French and Portuguese", "Other"))
+
+# Remove unnecessary variables
+rm(zipF)
+rm(outDir)
+rm(world_spdf)
+rm(africa_spdf)
+rm(map_data_fortified)
+rm(official_languages)
+```
+
+```{r static language map}
+#p <- ggplot() +
+#  # Country polygons
+#  geom_polygon(data=map_data, aes(fill=factor(official_language),
+#                                  x=long,
+#                                  y=lat,
+#                                  group=group,
+#                                  text=hover)) +
+#  # Country outlines
+#  geom_path(data = map_data, aes(x = long, 
+#                                 y = lat, 
+#                                 group = group), 
+#            color = "white", size = 0.1) +
+#  coord_equal() +
+#  theme_map() +
+#  labs(x=NULL,
+#       y=NULL,
+#       title="Official Languages in Africa",
+#       caption="Data: Wikipedia, ITU, IWS") 
+
+#q <- p + scale_fill_manual(values=c("#E16A86",
+#                                    "#C28500",
+#                                    "#7F9C00",
+#                                    "#00AB66",
+#                                    "#00AAB7",
+#                                    "#5093E3",
+#                                    "#C86DD7"),
+#                           guide_legend(title="Official Languages"))
+
+#q
+```
+
+```{r interactive language map}
+r <- ggplot(map_data, aes(long, lat, group=group, text=hover, fill=official_language)) + 
+  geom_polygon(alpha=0.8, colour="#4d4d4d", size=0.2) +
+  theme_map() + 
+  #labs(title="Official Languages in Africa") +
+  theme(plot.title=element_text(size=10)) +
+  scale_fill_manual(values=c("#E16A86",
+                                    "#C28500",
+                                    "#7F9C00",
+                                    "#00AB66",
+                                    "#00AAB7",
+                                    "#5093E3",
+                                    "#C86DD7"))
+  
+s <- ggplotly(r, tooltip="text") %>% 
+  layout(
+    hovermode = 'x',
+    legend = list(
+      orientation = 'v',
+      x = 0,
+      y = 0,
+      xanchor = 'center'))
+    #annotations=list(text="Data: Wikipedia, ITU, IWS",
+    #                 x=50,y=-50,
+    #                 font=list(size=13),
+    #                 showarrow=FALSE))
+```
+
+```{r output, include=TRUE}
+s
+#chart_link = api_create(s, filename = "official_languages_africa")
+#chart_link
+```
