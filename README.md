@@ -1,6 +1,5 @@
 # Projects
 
-1. Forecasting Dengue in Mexico with Google Trends
+## 1. Dengue Forecasting
 
-
-2. Interactive Map of Africa with Plotly
+## 2. Interactive Map of Africa 
