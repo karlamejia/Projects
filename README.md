@@ -1,1 +1,3 @@
-# Forecasting dengue incidence in Mexico using Google Trends 
+# Dengue Forecasting in Mexico with Google Trends
+
+
