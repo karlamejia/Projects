@@ -8,7 +8,7 @@ import pandas as pd
 from googleapiclient.discovery import build
 
 # ------ Insert your API key in the string below. -------
-API_KEY = 'AIzaSyDQQQhoXuQDt925BWvWEgrQ9doaR16_upU'
+API_KEY = '.'
 
 SERVER = 'https://www.googleapis.com'
 API_VERSION = 'v1beta'
