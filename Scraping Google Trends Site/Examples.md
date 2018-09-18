@@ -1,4 +1,5 @@
-## Example 1: Get top related queries for one search term 
+# Example 1: 
+## Get top related queries for one search term 
 ```python
 # Import methods
 %matplotlib inline
@@ -41,7 +42,8 @@ __Output:__
      'when is wrestlemania']
 
 
-## Example 2: Get top related queries for multiple search terms 
+# Example 2: 
+## Get top related queries for multiple search terms 
 __Code:__
 ```python
 getRelatedQueries(keywords = ['michael scott', 'dwight schrute'], 
@@ -102,7 +104,8 @@ __Output:__
 
 
 
-## Example 3: Get trends using one time interval  
+# Example 3: 
+## Get trends using one time interval  
 __Note__: The Google Trends website automatically chooses the frequency of the data based on the length of the interval. For example, if your time interval is longer than five years, Google Trends will return the data at a monthly instead of a weekly frequency. The following examples show how you can obtain weekly frequencies for longer time intervals by splitting the long interval into shorter overlapping intervals so that the `getTrends` method can calculate ratio between the overlapping dates to rescale and concatenate the trends.
 
 __Code:__
@@ -193,7 +196,8 @@ p.set_ylabel('Relative Search Frequency')
 ![png](output_7_1.png)
 
 
-## Example 4: Get trends using multiple overlapping time intervals to obtain weekly resolution
+# Example 4: 
+## Get trends using multiple overlapping time intervals to obtain weekly resolution
 __Code:__
 ```python
 trends = getTrends(['beyonce', 'jay z'], ['2010-01-01 2014-01-10', '2014-01-05 2018-01-01'], 'US') 
