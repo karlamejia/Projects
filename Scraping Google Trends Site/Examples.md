@@ -1,5 +1,5 @@
-# Example 1
-You can use `getRelatedQueries` to get top related queries for one search term.
+## Example 1
+You can use `getRelatedQueries` to get a list of the top related queries for one search term.
 
 __Code:__
 ```python
@@ -43,8 +43,9 @@ __Output:__
      'when is wrestlemania']
 
 
-# Example 2
-### Get top related queries for multiple search terms 
+## Example 2
+You can use `getRelatedQueries` to get a list of the top related queries for multiple search terms.
+
 __Code:__
 ```python
 getRelatedQueries(keywords = ['michael scott', 'dwight schrute'], 
@@ -105,15 +106,23 @@ __Output:__
 
 
 
-# Example 3
-### Get trends using one time interval  
-__Note__: The Google Trends website automatically chooses the frequency of the data based on the length of the interval. For example, if your time interval is longer than five years, Google Trends will return the data at a monthly instead of a weekly frequency. The following examples show how you can obtain weekly frequencies for longer time intervals by splitting the long interval into shorter overlapping intervals so that the `getTrends` method can calculate ratio between the overlapping dates to rescale and concatenate the trends.
+## Example 3
+You can use `getTrends` to get a pandas dataframe of the relative search frequencies over the time interval of your choice. 
+
+__Note:__
+The public Google Trends API automatically selects the frequency of the data based on the length of the interval. As shown below, the Google Trends API returns monthly data for intervals longer than five years. Check out the next example to see how to obtain weekly data for intervals longer than 5 years.
 
 __Code:__
 ```python
 # Get trends using one time interval
 trends = getTrends(['beyonce', 'jay z'], ['2010-01-01 2018-01-01'], 'US') 
 trends.head()
+
+```
+```python
+p = trends.plot(title='Monthly Relative Search Frequencies (2010-2018)')
+p.set_xlabel('Months')
+p.set_ylabel('Relative Search Frequency')
 ```
 
 __Output:__
@@ -180,29 +189,23 @@ __Output:__
 
 
 
-```python
-p = trends.plot(title='Monthly Relative Search Frequencies (2010-2018)')
-p.set_xlabel('Months')
-p.set_ylabel('Relative Search Frequency')
-```
-
-
-
-
-    <matplotlib.text.Text at 0x200fdfe0400>
-
-
-
-
 ![png](output_7_1.png)
 
 
-# Example 4
-### Get trends using multiple overlapping time intervals to obtain weekly resolution
+## Example 4
+You can use `getTrends` to get a pandas dataframe of the relative search frequencies over the time interval of your choices. To obtain weekly data for intervals longer than five year, you can split up the original interval into shorter intervals that overlap by one week so that the `getTrends` method can calculate the ratio between the relative search frequencies from overlapping week to rescale and concatenate the resulting trends.
+
+
 __Code:__
 ```python
 trends = getTrends(['beyonce', 'jay z'], ['2010-01-01 2014-01-10', '2014-01-05 2018-01-01'], 'US') 
 trends.head()
+```
+
+```python
+p = trends.plot(title='Weekly Relative Search Frequencies (2010-2018)')
+p.set_xlabel('Weeks')
+p.set_ylabel('Relative Search Frequency')
 ```
 
 __Output:__
@@ -268,17 +271,6 @@ __Output:__
 
 
 
-
-```python
-p = trends.plot(title='Weekly Relative Search Frequencies (2010-2018)')
-p.set_xlabel('Weeks')
-p.set_ylabel('Relative Search Frequency')
-```
-
-
-
-
-    <matplotlib.text.Text at 0x200fe0cae80>
 
 
 
