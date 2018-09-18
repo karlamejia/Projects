@@ -7,8 +7,8 @@ __Code:__
 from google_trends import getRelatedQueries
 
 # Get related queries for one search term
-getRelatedQueries(keywords = ['wrestlemania'], 
-                  interval = '2016-01-01 2018-01-01', 
+getRelatedQueries(keywords = ['wrestlemania'],
+                  interval = '2016-01-01 2018-01-01',
                   country_id = 'US')
 ```
 
@@ -51,8 +51,8 @@ __Code:__
 from google_trends import getRelatedQueries
 
 # Get related queries for multiple search terms
-getRelatedQueries(keywords = ['michael scott', 'dwight schrute'], 
-                  interval = '2014-01-01 2018-01-01', 
+getRelatedQueries(keywords = ['michael scott', 'dwight schrute'],
+                  interval = '2014-01-01 2018-01-01',
                   country_id = 'US')
 ```
 
@@ -110,18 +110,18 @@ __Output:__
 
 
 ## Example 3
-You can use `getTrends` to get a pandas dataframe of the relative search frequencies over the time interval of your choice. 
+You can use `getTrends` to get a pandas dataframe of the relative search frequencies over the time interval of your choice.
 
 __Note:__
 The public Google Trends API automatically selects the frequency of the data based on the length of the interval. As shown below, the Google Trends API returns monthly data for intervals longer than five years. Check out the next example to see how to obtain weekly data for intervals longer than 5 years.
 
 __Code:__
 ```python
-# Import 
+# Import
 from google_trends import getTrends
 
 # Get trends using one time interval
-trends = getTrends(['beyonce', 'jay z'], ['2010-01-01 2018-01-01'], 'US') 
+trends = getTrends(['beyonce', 'jay z'], ['2010-01-01 2018-01-01'], 'US')
 trends.head()
 
 ```
@@ -183,7 +183,7 @@ __Output:__
 
 
 
-![png](output_7_1.png)
+![png](img/output_7_1.png)
 
 
 ## Example 4
@@ -196,7 +196,7 @@ __Code:__
 from google_trends import getTrends
 
 # Get trends using overlapping time intervals
-trends = getTrends(['beyonce', 'jay z'], ['2010-01-01 2014-01-10', '2014-01-05 2018-01-01'], 'US') 
+trends = getTrends(['beyonce', 'jay z'], ['2010-01-01 2014-01-10', '2014-01-05 2018-01-01'], 'US')
 trends.head()
 ```
 
@@ -261,5 +261,4 @@ __Output:__
 
 
 
-![png](output_9_1.png)
-
+![png](img/output_9_1.png)
