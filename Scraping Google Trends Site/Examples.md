@@ -3,11 +3,10 @@ You can use `getRelatedQueries` to get a list of the top related queries for one
 
 __Code:__
 ```python
-# Import methods
-%matplotlib inline
-from google_trends import *
-```
-```python
+# Import
+from google_trends import getRelatedQueries
+
+# Get related queries for one search term
 getRelatedQueries(keywords = ['wrestlemania'], 
                   interval = '2016-01-01 2018-01-01', 
                   country_id = 'US')
@@ -48,6 +47,10 @@ You can use `getRelatedQueries` to get a list of the top related queries for mul
 
 __Code:__
 ```python
+# Import
+from google_trends import getRelatedQueries
+
+# Get related queries for multiple search terms
 getRelatedQueries(keywords = ['michael scott', 'dwight schrute'], 
                   interval = '2014-01-01 2018-01-01', 
                   country_id = 'US')
@@ -114,12 +117,16 @@ The public Google Trends API automatically selects the frequency of the data bas
 
 __Code:__
 ```python
+# Import 
+from google_trends import getTrends
+
 # Get trends using one time interval
 trends = getTrends(['beyonce', 'jay z'], ['2010-01-01 2018-01-01'], 'US') 
 trends.head()
 
 ```
 ```python
+# Plot result
 p = trends.plot(title='Monthly Relative Search Frequencies (2010-2018)')
 p.set_xlabel('Months')
 p.set_ylabel('Relative Search Frequency')
@@ -185,11 +192,16 @@ You can use `getTrends` to get a pandas dataframe of the relative search frequen
 
 __Code:__
 ```python
+# Import
+from google_trends import getTrends
+
+# Get trends using overlapping time intervals
 trends = getTrends(['beyonce', 'jay z'], ['2010-01-01 2014-01-10', '2014-01-05 2018-01-01'], 'US') 
 trends.head()
 ```
 
 ```python
+# Plot results
 p = trends.plot(title='Weekly Relative Search Frequencies (2010-2018)')
 p.set_xlabel('Weeks')
 p.set_ylabel('Relative Search Frequency')
