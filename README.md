@@ -5,3 +5,6 @@ Dengue is a mosquito-borne disease that affects millions of people in tropical a
 
 ## 2. Interactive Map of Africa 
 I used [plotly](https://plot.ly/) with [R](https://www.r-project.org/) to create an interactive map of the official languages spoken in Africa. The map also displays summary information about the estimated population and internet penetration rate of each country. 
+
+## 3. Scrape Google Trends Website
+I used the [pytrends](https://github.com/GeneralMills/pytrends) package by [GeneralMills](https://github.com/GeneralMills) in [Python](https://www.python.org/) to write code to scrape the [Google Trends](https://trends.google.com/trends/) website.
