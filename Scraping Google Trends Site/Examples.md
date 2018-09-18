@@ -1,14 +1,10 @@
-
-# Examples
-
-
+## Example 1: Get top related queries for one search term 
 ```python
 # Import methods
 %matplotlib inline
 from google_trends import *
 ```
 
-## Example 1: Get top related queries for one search term 
 ```python
 getRelatedQueries(keywords = ['wrestlemania'], 
                   interval = '2016-01-01 2018-01-01', 
