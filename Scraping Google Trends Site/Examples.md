@@ -3,7 +3,9 @@
 # Import methods
 %matplotlib inline
 from google_trends import *
+```
 
+```python
 getRelatedQueries(keywords = ['wrestlemania'], 
                   interval = '2016-01-01 2018-01-01', 
                   country_id = 'US')
