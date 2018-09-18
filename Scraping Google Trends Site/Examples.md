@@ -1,5 +1,5 @@
 # Example 1
-### Get top related queries for one search term 
+You can use `getRelatedQueries` to get top related queries for one search term.
 __Code:__
 ```python
 # Import methods
