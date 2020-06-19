@@ -7,9 +7,7 @@ output: github_document
 
 Data Source: https://covid-19-fort-bend-county-response-fbcgis.hub.arcgis.com/
 
-The Fort Bend County Community Impact Dashboard reports the daily total of positive COVID-19 cases by reported date as well as the daily total of tests conducted by the county. The daily percent of positive cases is not provided even though it is more informative than daily case totals since they don't take into account how many tests were conducted.
 
-It is unclear from the dashboard whether the reported positive cases include cases that were determined through tests not conducted by the county (e.g. tests conducted at a hospital or clinic). It is also unclear when the tests for the positive cases were conducted since the dashboard only displays the reported case date. That is why the data were aggregated at the weekly level and the percent of positive cases derived from it considered an estimate.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -32,20 +30,37 @@ weekly_df <- data.frame(Week=index(weekly), coredata(weekly))
 weekly_long_df <- gather(weekly_df[,1:3], Category, Total, Total.Tests:Total.Positive.Cases)
 ```
 
+The Fort Bend County Community Impact Dashboard reports the daily total of positive COVID-19 cases by reported date as well as the daily total of tests conducted by the county. The daily percent of positive cases is not provided even though it is more informative than daily case totals since they don't take into account how many tests were conducted.
+
+It is unclear from the dashboard whether the reported positive cases include cases that were determined through tests not conducted by the county (e.g. tests conducted at a hospital or clinic). It is also unclear when the tests for the positive cases were conducted since the dashboard only displays the reported case date. That is why the data were aggregated at the weekly level and the percent of positive cases derived from it considered an estimate.
+
+## Total Tests and Total Positive Cases 
+
+Phase I of reopening Texas coincided with Memorial Day. The surge in testing before Memorial Day weekend may be due to employers requesting that employees prove they do not have COVID-19 before returning to work.
+
 
 ```{r raw totals, echo=FALSE}
-ggplot(data=weekly_long_df, aes(x=Week, y=Total, group=Category)) + 
+memorial_day=weekly_long_df[8,]$Week
+ggplot(data=weekly_long_df[as.Date(weekly_long_df$Week) != as.Date('2020-06-16'),], aes(x=Week, y=Total, group=Category)) + 
   geom_line(aes(color=Category)) + geom_point(aes(color=Category)) +
   labs(title="Weekly Total Cases and Tests in Fort Bend County",x="Week", y = "Total") +
+  geom_vline(aes(xintercept=memorial_day), linetype="dotted", color="red", size=1) +
   scale_color_brewer(palette="Paired") + theme_minimal()  + theme(legend.position="bottom") +
   theme(legend.title=element_blank())
 ```
+
+## Estimated Percent of Positive Cases 
+
+Before Memorial Day, the percent of positive cases decreased steadily as testing increased from over 50\% down to 5\%. After Memorial Day, the percent of positive cases increased to 10\%.
 
 
 ```{r plot, echo=FALSE}
 ggplot(data=weekly_df[1:11,], aes(x=Week, y=Pct.Positive.Cases, group=1)) + 
   geom_line() + geom_point() +
   labs(title="Estimated Weekly Percent of Positive Cases in Fort Bend County",x="Week", y = "Percent of Positive Cases") +
+  geom_vline(aes(xintercept=memorial_day), linetype="dotted", color="red", size=1) +
   scale_color_brewer(palette="Reds") + theme_minimal()
 ```
+
+
 
