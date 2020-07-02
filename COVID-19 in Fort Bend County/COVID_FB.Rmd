@@ -14,25 +14,28 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r libraries, include=FALSE}
-library(gdata)
+library(readxl)
 library(xts)
 library(ggplot2)
 library(tidyr)
+library(zoo)
 ```
 
 ```{r data, include=FALSE}
-mydata = read.xls("covid_fb.xlsx")
-mydata <- mydata[c('Date','Total.Tests', 'Total.Positive.Cases')]
-mydata <- as.xts(mydata[c('Total.Tests', 'Total.Positive.Cases')], order.by=as.Date(mydata$Date, format = "%d-%b"))
-weekly <- apply.weekly(mydata, colSums)
-weekly$Pct.Positive.Cases <- 100.0*weekly$Total.Positive.Cases/weekly$Total.Tests
-weekly_df <- data.frame(Week=index(weekly), coredata(weekly))
-weekly_long_df <- gather(weekly_df[,1:3], Category, Total, Total.Tests:Total.Positive.Cases)
+mydata <- read.csv('covid_fb.csv')
+mydata <- as.xts(mydata[c('Total_Tests', 'Total_Cases')], order.by=as.Date(mydata$Date, format = "%Y-%m-%d"))
 ```
 
-The Fort Bend County Community Impact Dashboard reports the daily total of positive COVID-19 cases by reported date as well as the daily total of tests conducted by the county. The daily percent of positive cases is not provided even though it is more informative than daily case totals since they don't take into account how many tests were conducted.
+```{r weekly, include=FALSE}
+weekly <- rollmean(mydata, 7)
+weekly$Pct.Positive.Cases <- 100.0*weekly$Total_Cases/weekly$Total_Tests
+weekly_df <- data.frame(Week=index(weekly), coredata(weekly))
+weekly_long_df <- gather(weekly_df[,1:3], Category, Total, Total_Tests:Total_Cases)
+```
 
-It is unclear from the dashboard whether the reported positive cases include cases that were determined through tests not conducted by the county (e.g. tests conducted at a hospital or clinic). It is also unclear when the tests for the positive cases were conducted since the dashboard only displays the reported case date. That is why the data were aggregated at the weekly level and the percent of positive cases derived from it considered an estimate.
+The Fort Bend County Community Impact Dashboard reports the daily total of positive COVID-19 cases by reported date as well as the daily total of tests conducted by the county. The daily percent of positive cases is not provided but would be informative to consider.
+
+It is unclear from the dashboard whether the reported positive cases include cases that were determined through tests not conducted by the county (e.g. tests conducted at a hospital or clinic). It is also unclear when the tests for the positive cases were conducted since the dashboard only displays the reported case date. That is why the data were aggregated to obtain 7-day moving averages and the percent of positive cases derived from them considered a proxy for the true percent of positive cases.
 
 ## Total Tests and Total Positive Cases 
 
@@ -40,11 +43,21 @@ Phase I of reopening Texas coincided with Memorial Day. The surge in testing bef
 
 
 ```{r raw totals, echo=FALSE}
-memorial_day=weekly_long_df[8,]$Week
-ggplot(data=weekly_long_df[as.Date(weekly_long_df$Week) != as.Date('2020-06-16'),], aes(x=Week, y=Total, group=Category)) + 
-  geom_line(aes(color=Category)) + geom_point(aes(color=Category)) +
-  labs(title="Weekly Total Cases and Tests in Fort Bend County",x="Week", y = "Total") +
-  geom_vline(aes(xintercept=memorial_day), linetype="dotted", color="red", size=1) +
+phase1 = as.Date('2020-05-01')
+phase2 = as.Date('2020-05-18')
+phase3 = as.Date('2020-06-03')
+memorial_day=as.Date('2020-05-25')
+mothers_day = as.Date('2020-05-10')
+fathers_day = as.Date('2020-06-21')
+ggplot(data=weekly_long_df, aes(x=Week, y=Total, group=Category)) + 
+  geom_line(aes(color=Category), size=2) + #geom_point(aes(color=Category)) +
+  labs(title="7-day Moving Averages of Positive Cases and Tests Reported in Fort Bend County",x="", y = "7-day Moving Average") +
+  geom_vline(aes(xintercept=phase1), linetype="dotted", color="gray25", size=1) +
+  annotate(geom="text", x=phase1-1.5, y=520, label="Phase 1", color="gray35", angle=90) +
+  geom_vline(aes(xintercept=phase2), linetype="dotted", color="gray35", size=1) +
+  annotate(geom="text", x=phase2-1.5, y=520, label="Phase 2", color="gray35", angle=90) +
+  geom_vline(aes(xintercept=phase3), linetype="dotted", color="gray35", size=1) +
+  annotate(geom="text", x=phase3-1.5, y=520, label="Phase 3", color="gray35", angle=90) +
   scale_color_brewer(palette="Paired") + theme_minimal()  + theme(legend.position="bottom") +
   theme(legend.title=element_blank())
 ```
@@ -55,10 +68,19 @@ Before Memorial Day, the percent of positive cases decreased steadily as testing
 
 
 ```{r plot, echo=FALSE}
-ggplot(data=weekly_df[1:11,], aes(x=Week, y=Pct.Positive.Cases, group=1)) + 
-  geom_line() + geom_point() +
-  labs(title="Estimated Weekly Percent of Positive Cases in Fort Bend County",x="Week", y = "Percent of Positive Cases") +
-  geom_vline(aes(xintercept=memorial_day), linetype="dotted", color="red", size=1) +
+ggplot(data=weekly_df, aes(x=Week, y=Pct.Positive.Cases, group=1)) + 
+  geom_line(size=2) + #geom_point() +
+  labs(title="Estimated Weekly Percent of Positive Cases in Fort Bend County",
+       subtitle="Based on 7-day Moving Averages of Reported Cases and Tests",
+       x="", y = "Estimated Percent of Positive Cases") +
+  geom_hline(aes(yintercept=5), linetype="dashed", color="red", size=0.5) +
+  annotate(geom="text", x=phase1-20, y=8, label="5% Positive Rate", color="red") +
+  geom_vline(aes(xintercept=phase1), linetype="dotted", color="gray35", size=0.75) +
+  annotate(geom="text", x=phase1-1.5, y=54, label="Phase 1", color="gray35", angle=90) +
+  geom_vline(aes(xintercept=phase2), linetype="dotted", color="gray35", size=0.75) +
+  annotate(geom="text", x=phase2-1.5, y=54, label="Phase 2", color="gray35", angle=90) +
+  geom_vline(aes(xintercept=phase3), linetype="dotted", color="gray35", size=0.75) +
+  annotate(geom="text", x=phase3-1.5, y=54, label="Phase 3", color="gray35", angle=90) +
   scale_color_brewer(palette="Reds") + theme_minimal()
 ```
 
