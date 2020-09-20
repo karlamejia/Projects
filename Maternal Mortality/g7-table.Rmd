@@ -1,0 +1,136 @@
+---
+title: "Health Coverage and Family Leave Policies in the G7"
+output: html_document
+resource_files:
+  - '.'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r data, echo=FALSE}
+library(reactable)
+library(htmltools)
+
+data <- data.frame(
+  Country = c("Canada", "France", "Germany", "Italy", "Japan", "UK", "USA"),
+  Universal.Health.Coverage = c(T, T, T, T, T, T, F),
+  Paid.Maternity.Leave = c(27, 19, 43, 25, 36, 12, 0),
+  Paid.Paternity.Leave = c(0, 5.6, 5.7, 0.4, 30.4, 0.4, 0)
+)
+
+# UHC: https://assets.publishing.service.gov.uk/media/5dcd7babe5274a07370ecdd4/678_G7_Universal_Health_Coverage__UHC_.pdf
+# Family Leave: https://www.unicef-irc.org/publications/pdf/Family-Friendly-Policies-Research_UNICEF_%202019.pdf
+
+```
+
+```{r table, echo=FALSE}
+tbl <- reactable(
+  data,
+  defaultColDef = colDef(class = "cell", headerClass = "header", 
+                         align="center", 
+                         cell = function(value){
+                                    div(class = "leave",
+                                        img(class = "icon",
+                                            alt = if (value > 0) {"Yes"} else {"No"},
+                                            src = if (value > 0) {sprintf("img/TRUE.png")} else {sprintf("img/FALSE.png")}),
+                                        div(class = "weeks", paste(value, " weeks")))}),
+  columns = list(
+    Country = colDef(align="left",
+      minWidth = 100, style="border-right: 2px solid #555",
+      headerStyle = list(fontWeight = 700), 
+      cell = function(value, index) {
+        div(class = "country",
+            img(class = "flag", 
+                alt = paste(value, "flag"), 
+                src = sprintf("img/%s.png", value)), 
+            div(class = "country-name", value))}
+      ),
+    Universal.Health.Coverage = colDef(name = "Universal Health Coverage",
+                                       maxWidth = 300,
+                                       cell=function(value){
+                                         div(class = "leave",
+                                             img(class = "icon",
+                                                 alt = if (value > 0) {"Yes"} else {"No"},
+                                                  src = if (value > 0) {sprintf("img/TRUE.png")} else {sprintf("img/FALSE.png")}))}),
+    Paid.Maternity.Leave = colDef(name = "Paid Maternity Leave"),
+    Paid.Paternity.Leave = colDef(name = "Paid Paternity Leave")),
+  showSortIcon = FALSE,
+  borderless = TRUE,
+  class = "g7-table"
+)
+div(class = "g7",
+  tbl,
+  'Sources: The health coverage data come from a K4D report published on October 2019 titled "G7 Universal Health Coverage". The guaranteed paid parental leave data come from a UNICEF paper published on June 2019 titled "Family Friendly Policies in the OECD and EU".')
+```
+
+---
+
+```{r, echo=FALSE}
+tags$link(href = "https://fonts.googleapis.com/css?family=Karla:400,700|Fira+Mono&display=fallback", rel = "stylesheet")
+```
+
+```{css, echo=FALSE}
+.g7 {
+  font-family: Karla, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+
+.g7-table {
+  margin-bottom: 20px;
+}
+/* Align header text to the bottom */
+.header,
+.group-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.header {
+  border-bottom-color: #555;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.border-left {
+  border-left: 2px solid #555;
+}
+/* Use box-shadow to create row borders that appear behind vertical borders */
+.cell {
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+.group-last .cell {
+  box-shadow: inset 0 -2px 0 #555;
+}
+.country {
+  display: flex;
+  align-items: baseline;
+}
+.country-name {
+  font-size: 25px;
+  font-weight: 700;
+}
+.flag {
+  margin-right: 8px;
+  border: 1px solid #f0f0f0;
+}
+```
+
+
+```{css echo=FALSE}
+/* rmarkdown html documents */
+.main-container {
+  max-width: 1054px !important;
+}
+h1.title {
+  display: none;
+}
+/* pkgdown articles */
+.contents {
+  width: 1054px;
+}
+.page-header {
+  display: none;
+}
+```
